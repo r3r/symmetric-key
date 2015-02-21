@@ -20,16 +20,21 @@ class Encrypt(Base_Crypt):
         substituted = []
         p = []
         count = 0
+        seen = [False] * n
         for perm in perms:
             for ind, val in enumerate(perm):
                 if val == '1':
+                    candidate = chunks[ind]
+                    if seen[ind]:
+                        candidate = self.generate_garbage(self.block_size)
                     if count % 2 == 0:
-                        substituted.append(self.cieser_shift(chunks[ind], random.randrange(1, self.cipher_key), 'L'))
+                        substituted.append(self.cieser_shift(candidate, random.randrange(1, self.cipher_key), 'L'))
                     else:
-                        substituted.append(self.cieser_shift(chunks[ind], random.randrange(1, self.cipher_key), 'R'))
+                        substituted.append(self.cieser_shift(candidate, random.randrange(1, self.cipher_key), 'R'))
                     p.append(ind)
                     #substituted.append(chunks[ind])
                     count += 1
+                    seen[ind] = True
         return ''.join(substituted), n
 
 

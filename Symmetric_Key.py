@@ -27,16 +27,17 @@ def driver():
                 "The quick fox jumped over the lazy brown dog!"]
     for string in strings:
         random.seed(time.time())
-        sm = Symmetric_Key(random.randrange(512), random.randrange(2, 10), random.randrange(1,26))
+        sm = Symmetric_Key(random.randrange(1024), random.randrange(2,10),random.randrange(10,256))
         enc, blocks = sm.encrypt(string)
         dec = sm.decrypt(enc, blocks)
         print "Seed: ", sm.seed
         print "Block Size: ", sm.block_size
         print "Cipher Key: ", sm.cipher_key
         print "Num Blocks: ", blocks
-        print "Original: ", string
+        print "Original: ", string, "Length: ", len(string)
         print "Encrypted: ", enc, "Length: ", len(enc)
-        print "Decrypted: ", dec
+        print "Decrypted: ", dec, "Length: ", len(dec)
+        print "Size increase Factor: ", len(enc)/float(len(string))
         print "Success" if dec == string else "Failure!!"
         print
 

@@ -20,17 +20,18 @@ class Decrypt(Base_Crypt):
         perms = self.get_permutations(self.num_blocks, self.seed)
         chunks = [""] * self.num_blocks
         message_ind = 0
+        seen = [False] * self.num_blocks
         for perm in perms:
             for ind, val in enumerate(perm):
-                if message_ind >= len(message):
-                    break
                 if val == '1':
-                    if message_ind % 2 == 0:
-                        chunks[ind]  = self.cieser_shift(message[message_ind], random.randrange(1, self.cipher_key), 'R')
+                    if not seen[ind]:
+                        if message_ind % 2 == 0:
+                            chunks[ind] = self.cieser_shift(message[message_ind], random.randrange(1, self.cipher_key), 'R')
+                        else:
+                            chunks[ind] = self.cieser_shift(message[message_ind], random.randrange(1, self.cipher_key), 'L')
                     else:
-                         chunks[ind]  = self.cieser_shift(message[message_ind], random.randrange(1, self.cipher_key), 'L')
-
-                    #chunks[ind] = message[message_ind]
+                        random.randrange(1, self.cipher_key) #just to keep the random generator in sync with skipped messages
+                    seen[ind] = True
                     message_ind += 1
         return ''.join(chunks)
 

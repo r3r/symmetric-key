@@ -1,5 +1,5 @@
 __author__ = 'RiteshReddy'
-import random
+import random, os
 class Base_Crypt():
     padd = '~'
 
@@ -15,7 +15,6 @@ class Base_Crypt():
         i  = len(message)-1
         while i > 0 and message[i] == self.padd:
             i -= 1
-
         message = message[:i+1]
         return message
 
@@ -43,6 +42,8 @@ class Base_Crypt():
                     seen[ind] = True
         return perms
 
+    def generate_garbage(self, block_size):
+        return os.urandom(block_size)
 
     def cieser_shift(self, text, key, dir='L'):
         lst = [x for x in text]
