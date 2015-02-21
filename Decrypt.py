@@ -1,6 +1,6 @@
 __author__ = 'RiteshReddy'
 from Base_Crypt import Base_Crypt
-
+import random
 class Decrypt(Base_Crypt):
 
     def __init__(self, seed, block_size, cipher_key, num_blocks):
@@ -10,8 +10,8 @@ class Decrypt(Base_Crypt):
         self.num_blocks = num_blocks
 
     def decrypt(self, cipher):
-        unsubstituted = self.cieser_shift(cipher, self.cipher_key, 'L')
-        permuted = self.__permute(unsubstituted)
+        #unsubstituted = self.cieser_shift(cipher, self.cipher_key, 'L')
+        permuted = self.__permute(cipher)
         message = self.unpadd_message(permuted)
         return message
 
@@ -25,8 +25,12 @@ class Decrypt(Base_Crypt):
                 if message_ind >= len(message):
                     break
                 if val == '1':
+                    if message_ind % 2 == 0:
+                        chunks[ind]  = self.cieser_shift(message[message_ind], random.randrange(1, self.cipher_key), 'R')
+                    else:
+                         chunks[ind]  = self.cieser_shift(message[message_ind], random.randrange(1, self.cipher_key), 'L')
 
-                    chunks[ind] = message[message_ind]
+                    #chunks[ind] = message[message_ind]
                     message_ind += 1
         return ''.join(chunks)
 

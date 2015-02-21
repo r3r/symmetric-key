@@ -37,6 +37,7 @@ def driver():
         print "Original: ", string
         print "Encrypted: ", enc, "Length: ", len(enc)
         print "Decrypted: ", dec
+        print "Success" if dec == string else "Failure!!"
         print
 
 driver()
