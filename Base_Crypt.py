@@ -3,13 +3,15 @@ import random
 class Base_Crypt():
     padd = '~'
 
-    def padd_message(self, message, block_size):
+    def padd_message(self, message, num_blocks):
         length = len(message)
-        if block_size >= length:
-            raise Exception("too many chunks, i.e., message too short for number of chunks")
-        if length % block_size != 0:
-            message += self.padd * (block_size-(length % block_size))
+        block_size = length / num_blocks
+        if block_size * num_blocks != length:
+            block_size += 1
+            padd_size = block_size * num_blocks - length
+            message += self.padd * padd_size
         return message
+
 
     def unpadd_message(self, message):
         i  = len(message)-1
@@ -20,13 +22,13 @@ class Base_Crypt():
         return message
 
 
-    def split_message(self, message, block_size):
+    def split_message(self, message, num_blocks):
         length = len(message)
-        num_blocks = length/block_size
+        block_size = length/num_blocks
         chunks = []
         for i in range(0, length, block_size):
             chunks.append(message[i:i+block_size])
-        return chunks, num_blocks
+        return chunks
 
     def get_permutations(self, n, seed):
         random.seed(seed)

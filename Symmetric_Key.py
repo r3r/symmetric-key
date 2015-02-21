@@ -5,18 +5,18 @@ import random
 import time
 class Symmetric_Key():
     blocks = None
-    def __init__(self, seed, block_size, cipher_key):
+    def __init__(self, seed, num_blocks, cipher_key):
         self.seed = seed
         self.cipher_key = cipher_key
-        self.block_size = block_size
+        self.num_blocks = num_blocks
 
     def encrypt(self, message):
-        encryptor = Encrypt(self.seed, self.block_size, self.cipher_key)
-        msg, self.blocks =  encryptor.encrypt(message)
-        return msg, self.blocks
+        encryptor = Encrypt(self.seed, self.num_blocks, self.cipher_key)
+        msg =  encryptor.encrypt(message)
+        return msg
 
-    def decrypt(self, cipher, num_blocks):
-        decryptor = Decrypt(self.seed, self.block_size, self.cipher_key, num_blocks)
+    def decrypt(self, cipher):
+        decryptor = Decrypt(self.seed, self.num_blocks, self.cipher_key)
         return decryptor.decrypt(cipher)
 
 
@@ -24,19 +24,19 @@ def driver():
     strings = ["Hello My Name is Ritesh!",
                 "NSA NSA NSA SECRET!!!",
                 "COOL STUFF!",
-                "The quick fox jumped over the lazy brown dog!"]
+                "The quick brown fox jumped over the lazy dog!"]
     for string in strings:
         random.seed(time.time())
-        sm = Symmetric_Key(random.randrange(512), random.randrange(2, 10), random.randrange(1,26))
-        enc, blocks = sm.encrypt(string)
-        dec = sm.decrypt(enc, blocks)
+        sm = Symmetric_Key(random.randrange(512), random.randrange(1,15), random.randrange(1, 256))
+        enc = sm.encrypt(string)
+        dec = sm.decrypt(enc)
         print "Seed: ", sm.seed
-        print "Block Size: ", sm.block_size
         print "Cipher Key: ", sm.cipher_key
-        print "Num Blocks: ", blocks
-        print "Original: ", string
+        print "Num Blocks: ", sm.num_blocks
+        print "Original: ", string, "Length: ", len(string)
         print "Encrypted: ", enc, "Length: ", len(enc)
-        print "Decrypted: ", dec
+        print "Decrypted: ", dec, "Length: ", len(dec)
+        print "Success!" if dec == string else "Failure!!"
         print
 
 driver()
