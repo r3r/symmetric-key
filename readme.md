@@ -21,4 +21,4 @@
 * Symmetric_Key is the API for the encryption and decryption classes.
 * Simply run the driver() function in Symmetric_Key.py file for sample usage.
 
-##inspired by John Shegan's research
+##inspired by John Shaegan's research
